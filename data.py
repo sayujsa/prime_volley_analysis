@@ -75,22 +75,31 @@ class Data:
         # Attack, Block, Serve, Reception, Libero, Setter
         for i, df in enumerate(df_list):
             # Because there are 60 DFs. Sets go from 1 - 10 after the below
-            # code
+            # code. But for semi finals that are played less than 5 sets, there
+            # are 36 or 48 DFs. then sets go from 1 - 6 or 8. i.e, 3 or 4 set.
             set_num = (i // 6) + 1
             # Adding Set Numbers to all the Stats to merge them correctly
-            df['Set'] = set_num if set_num <= 5 else set_num - 5
+            if len(df_list) == 60:
+                df['Set'] = set_num if set_num <= 5 else set_num - 5
+            elif len(df_list) == 48:
+                df['Set'] = set_num if set_num <= 4 else set_num - 4
+            elif len(df_list) == 36:
+                df['Set'] = set_num if set_num <= 3 else set_num - 3
             # Checking the order of the DF to determine what type it is, i.e.,
             # attack, block, serve etc
             if i % 6 == 0:
-                # If the set <= 5 then its from left team and > 5 is right
-                # team. (for the right side team reduces
-                # by 5 to get the set number correct.
+                # If the set <= half the total sets then its from left team and
+                # if its > half the total sets played it's from right
+                # team. (the right side team reduces by half of the len of
+                # total sets to get the set number correct.
                 # Also for right team switches the order of teams to get the
                 # Playing Team and Opponents correct.
-                df['Team'], df['Opponent'], df['Match Number'] = (self.team_a,
-                                                                  self.team_b,
-                                                                  match_no) \
-                    if set_num <= 5 else (self.team_b, self.team_a, match_no)
+                if set_num <= (len(df_list) // 6) // 2:
+                    df['Team'], df['Opponent'], df['Match Number'] = \
+                        (self.team_a, self.team_b, match_no)
+                else:
+                    df['Team'], df['Opponent'], df['Match Number'] = \
+                        (self.team_b, self.team_a, match_no)
                 self.combined_attack_stats = pd.concat(
                     [self.combined_attack_stats, df], axis=0,
                     ignore_index=True)
