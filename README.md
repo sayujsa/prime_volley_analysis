@@ -19,7 +19,8 @@ Then used Pandas to do read_html on the saved page source to do the necessary st
 #### How To Run
 
 Download Chrome Driver from [here](https://chromedriver.chromium.org/downloads) if not installed already.
-Download all the files and edit the main.py file - change the location of the webdriver (driver_binary_location) and the chrome browser app (binary_app_location) to the correct location on your system. In Windows, the webdriver location(driver_binary_location) should contain "/" between directories.
+
+Download all the files from the repo and edit the main.py file - change the location of the webdriver (driver_binary_location) and the chrome browser app (binary_app_location) to the correct location on your system. In Windows, the webdriver location(driver_binary_location) should contain "/" between directories.
 But for the chrome browser app location(binary_app_location) it should be having regular "\".
 
 **example :**
