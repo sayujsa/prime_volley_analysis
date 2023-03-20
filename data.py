@@ -45,8 +45,18 @@ class Data:
     def clean_list(self, df_list: list) -> list:
         # List of indexes of the stats to remove. i.e., All set stats, All
         # stats combined (Aggregated Stats)
-        to_remove = [1, 2, 3, 4, 5, 6, 7, 8, 15, 22, 29, 36, 43, 44, 45, 46,
-                     47, 48, 49, 50, 57, 64, 71, 78]
+        # In the case that a 5 set match was played
+        if len(df_list) == 85:
+            to_remove = [1, 2, 3, 4, 5, 6, 7, 8, 15, 22, 29, 36, 43, 44, 45,
+                         46, 47, 48, 49, 50, 57, 64, 71, 78]
+        # In case a 4 set match was played
+        elif len(df_list) == 71:
+            to_remove = [1, 2, 3, 4, 5, 6, 7, 8, 15, 22, 29, 36, 37, 38, 39,
+                         40, 41, 42, 43, 50, 57, 64]
+        # In case a straight 3 set match was played
+        elif len(df_list) == 57:
+            to_remove = [1, 2, 3, 4, 5, 6, 7, 8, 15, 22, 29, 30, 31, 32, 33,
+                         34, 35, 36, 43, 50]
 
         # Removing the unwanted aggregated stats from the df list. reversing
         # the list to avoid index out of range
