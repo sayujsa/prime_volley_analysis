@@ -62,14 +62,7 @@ class Data:
         # the list to avoid index out of range
         # error while deleting items
         for df_index in to_remove[::-1]:
-            # Matches in semi and final are played best of 5 without 5
-            # compulsory sets. so in the chance that it does not have all the
-            # sets as other matches. tries with the unwanted sets and removes
-            # them
-            try:
-                del df_list[df_index]
-            except IndexError:
-                continue
+            del df_list[df_index]
 
         # Popping the main aggregated stats (index 0) which contains team names
         # and assigning it to the below variables
