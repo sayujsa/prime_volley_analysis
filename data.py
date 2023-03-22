@@ -46,7 +46,23 @@ def make_standings_file(bin_loc, driv_bin_loc) -> None:
                         "standings/")
             html_gotten_standings = browser.page_source
             browser.close()
-            pd.read_html(html_gotten_standings)[0].to_csv("standings.csv")
+
+            # Saving the csv and then reading it again to get rid of the
+            # multidimensional column headings
+            pd.read_html(html_gotten_standings)[0].to_csv('standings.csv')
+            standings_df = pd.read_csv('standings.csv')
+            col = ['Index', 'Rank', 'Team', 'Matches Played', 'Matches Won',
+                   'Matches Lost', '0', '1', '2', '3', '4', '5', 'Points',
+                   'Sets Won', 'Sets Lost', 'Set Ratio', 'Points Won',
+                   'Points Lost', 'Point Ratio']
+            standings_df.columns = col
+
+            # Removing the first row to get rid of unnecessary values
+            standings_df = standings_df[standings_df['Index'] >= 0]
+
+            # Removing unnecessary columns
+            standings_df.drop(['0', '1', '2', '3', '4', '5'], axis=1)
+            standings_df.to_csv("standings.csv")
             print("Successfully written standings data to csv")
             return None
 
