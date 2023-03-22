@@ -3,8 +3,9 @@ from selenium import webdriver
 
 
 # Getting the unfiltered data from the website, Finding the tables in it,
-# converting them to a list of pandas DFs
+# converting them to a list of pandas DFs.
 def get_df_list(match_no: int, bin_loc, driv_bin_loc) -> list:
+
     # Having 3 tries for the selenium module to load the whole page so as to
     # avoid timeout and to
     # avoid No Tables ValueError
@@ -26,6 +27,33 @@ def get_df_list(match_no: int, bin_loc, driv_bin_loc) -> list:
         # again. Also prints the failed match number
         except ValueError:
             print(f"trying match number {match_no} again")
+
+
+# For getting the standings data and writing it to csv.
+def make_standings_file(bin_loc, driv_bin_loc) -> None:
+    # Having 3 tries for the selenium module to load the whole page so as to
+    # avoid timeout and to
+    # avoid No Tables ValueError
+    for tries in range(3):
+        try:
+            options = webdriver.ChromeOptions()
+            options.binary_location = bin_loc
+            chrome_driver_binary = driv_bin_loc
+            browser = webdriver.Chrome(chrome_driver_binary,
+                                       chrome_options=options)
+            browser.get("https://en.volleyballworld.com/volleyball/"
+                        "competitions/prime-volleyball-league-2023/"
+                        "standings/")
+            html_gotten_standings = browser.page_source
+            browser.close()
+            pd.read_html(html_gotten_standings)[0].to_csv("standings.csv")
+            print("Successfully written standings data to csv")
+            return None
+
+        # In case if it closes before fully loading the Table, this tries
+        # again. Also prints the failed match number
+        except ValueError:
+            print(f"trying to get league standings again")
 
 
 class Data:
