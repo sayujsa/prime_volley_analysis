@@ -60,9 +60,6 @@ def make_standings_file(bin_loc, driv_bin_loc) -> None:
             # Removing the first row to get rid of unnecessary values
             standings_df = standings_df[standings_df['Index'] >= 0]
 
-            # Removing unnecessary columns
-            standings_df.drop(['0', '1', '2', '3', '4', '5'], axis=1)
-
             # Cleaning the team name and getting rid of SHORT NAMES at the end
             standings_df['Team'] = \
                 [x[-4::-1][::-1] for x in standings_df['Team']]
