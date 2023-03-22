@@ -1,5 +1,5 @@
 from data import Data
-from data import get_df_list
+from data import get_df_list, make_standings_file
 import os
 
 
@@ -11,6 +11,9 @@ binary_app_location = "/usr/bin/chromium-browser"
 # (matches are 15735 - 15765)
 match_start_num = 15735
 match_end_num = 15765
+
+# Scraping and writing the league standings data to a csv
+make_standings_file(binary_app_location, driver_binary_location)
 
 # Removing existing csv data file if it exists
 if os.path.exists("data_file.csv"):
